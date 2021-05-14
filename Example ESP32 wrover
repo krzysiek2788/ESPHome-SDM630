@@ -1,0 +1,214 @@
+substitutions:
+  devicename: sdm630
+  friendly_name: ttgo_sdm630
+  ip_address: !secret sdm630
+
+esphome:
+  name: $devicename
+  platform: ESP32
+  board: esp-wrover-kit
+  includes:
+    - custom_components/sdm/SDM_Config_User.h
+    - custom_components/sdm/SDM.h
+    - custom_components/sdm/sdm_esphome.h
+
+wifi:
+  ssid: !secret wifi_id
+  password: !secret wifi_pwd
+  manual_ip:
+    static_ip: ${ip_address}
+    gateway: 192.168.0.1
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  #ap:
+   # ssid: "Home Lights Notify"
+    #password: "YiwdlGqxsCgP"
+
+#captive_portal:
+
+# Enable logging
+logger:
+  level: DEBUG
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+
+uart:
+  - id: modbus_uart
+    tx_pin: TX
+    rx_pin: RX
+    baud_rate: 9600
+    stop_bits: 1
+ota:
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+binary_sensor:
+  # https://esphome.io/components/binary_sensor/status.html
+  - platform: status
+    name: "SDM630 Status"
+
+sensor:
+  - platform: uptime
+    name: "SDM630 Uptime Sensor"
+    
+  - platform: custom
+    lambda: |-
+      auto sdm_sensors = new SDMComponent();
+      App.register_component(sdm_sensors);
+      return {sdm_sensors->voltage_sensor_1,sdm_sensors->voltage_sensor_2,sdm_sensors->voltage_sensor_3, sdm_sensors->current_sensor_1,sdm_sensors->current_sensor_2,sdm_sensors->current_sensor_3,sdm_sensors->currentsum_sensor, sdm_sensors->power_sensor_1,sdm_sensors->power_sensor_2,sdm_sensors->power_sensor_3,sdm_sensors->powersum_sensor,sdm_sensors->vars_sensor_1,sdm_sensors->vars_sensor_2,sdm_sensors->vars_sensor_3,sdm_sensors->varssum_sensor, sdm_sensors->frequency_sensor,sdm_sensors->active_energy_import_sensor,sdm_sensors->active_energy_export_sensor,sdm_sensors->reactive_energy_import_sensor,sdm_sensors->reactive_energy_export_sensor,sdm_sensors->import_kwh_sensor_1,sdm_sensors->import_kwh_sensor_2,sdm_sensors->import_kwh_sensor_3,sdm_sensors->importsum_kwh_sensor,sdm_sensors->export_kwh_sensor_1,sdm_sensors->export_kwh_sensor_2,sdm_sensors->export_kwh_sensor_3,sdm_sensors->exportsum_kwh_sensor,sdm_sensors->power_factor_sensor_1,sdm_sensors->power_factor_sensor_2,sdm_sensors->power_factor_sensor_3,sdm_sensors->power_factor_total_sensor,sdm_sensors->energy_total_sensor_1,sdm_sensors->energy_total_sensor_2,sdm_sensors->energy_total_sensor_3,sdm_sensors->energy_totalsum_sensor};
+    sensors:
+      - name: "Voltage Phase 1"
+        unit_of_measurement: V
+        accuracy_decimals: 1
+      - name: "Voltage Phase 2"
+        unit_of_measurement: V
+        accuracy_decimals: 1
+      - name: "Voltage Phase 3"
+        unit_of_measurement: V
+        accuracy_decimals: 1
+
+      - name: "Current Phase 1"
+        unit_of_measurement: A
+        accuracy_decimals: 2
+      - name: "Current Phase 2"
+        unit_of_measurement: A
+        accuracy_decimals: 2
+      - name: "Current Phase 3"
+        unit_of_measurement: A
+        accuracy_decimals: 2
+      - name: "Current Sum"
+        unit_of_measurement: A
+        accuracy_decimals: 2
+
+      - name: "Power Phase 1"
+        unit_of_measurement: W
+        accuracy_decimals: 2
+        id: power_1
+      - name: "Power Phase 2"
+        unit_of_measurement: W
+        accuracy_decimals: 2
+        id: power_2
+      - name: "Power Phase 3"
+        unit_of_measurement: W
+        accuracy_decimals: 2
+        id: power_3
+      - name: "Power Sum"
+        unit_of_measurement: W
+        accuracy_decimals: 2
+        id: power_sum
+
+      - name: "VArs Phase 1"
+        unit_of_measurement: VAr
+        accuracy_decimals: 2
+      - name: "VArs Phase 2"
+        unit_of_measurement: VAr
+        accuracy_decimals: 2
+      - name: "VArs Phase 3"
+        unit_of_measurement: VAr
+        accuracy_decimals: 2
+      - name: "VArs Sum"
+        unit_of_measurement: VAr
+        accuracy_decimals: 2
+
+      - name: "Frequency"
+        unit_of_measurement: Hz
+        accuracy_decimals: 1
+
+      - name: "Active Energy Import"
+        unit_of_measurement: Wh
+        accuracy_decimals: 2
+      - name: "Active Energy Export"
+        unit_of_measurement: Wh
+        accuracy_decimals: 2
+      - name: "Reactive Energy Import"
+        unit_of_measurement: VARh
+        accuracy_decimals: 2
+      - name: "Reactive Energy Export"
+        unit_of_measurement: VARh
+        accuracy_decimals: 2
+
+      - name: "Import Phase 1"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Import Phase 2"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Import Phase 3"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Import Sum"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+
+      - name: "Export Phase 1"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Export Phase 2"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Export Phase 3"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Export Sum"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+
+      - name: "Power Factor Phase 1"
+        accuracy_decimals: 2
+      - name: "Power Factor Phase 2"
+        accuracy_decimals: 2
+      - name: "Power Factor Phase 3"
+        accuracy_decimals: 2
+      - name: "Power Factor Sum"
+        accuracy_decimals: 2
+
+      - name: "Energy Total Phase 1"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Energy Total Phase 2"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Energy Total Phase 3"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+      - name: "Energy Total Sum"
+        unit_of_measurement: kWh
+        accuracy_decimals: 2
+        
+#Auto create daily total energy counter for each Phase
+  - platform: total_daily_energy
+    name: "Daily Energy Phase 1"
+    icon: "mdi:counter"
+    power_id: power_1
+    filters:
+    # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: total_daily_energy
+    name: "Daily Energy Phase 2"
+    icon: "mdi:counter"
+    power_id: power_2
+    filters:
+    # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: total_daily_energy
+    name: "Daily Energy Phase 3"
+    icon: "mdi:counter"
+    power_id: power_3
+    filters:
+    # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: total_daily_energy
+    name: "Daily Energy Sum"
+    icon: "mdi:counter"
+    power_id: power_sum
+    filters:
+    # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
