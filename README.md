@@ -1,7 +1,7 @@
 # ESPHome+SDM630
 
 # 1. About
-This repository is an instruction how to use energy meter SDM630 Modbus V2 with ESP32 loaded with ESPHome. Program is meant to read all needed data from the counter if you need something more feel free to modify the code.
+This repository is an instruction how to use energy meter SDM630 Modbus V2 with ESP32/8266 loaded with ESPHome. Program is meant to read all needed data from the counter if you need something more feel free to modify the code.
 
 # 2. Needed things to start
 
@@ -25,6 +25,6 @@ Usually any board which is compatible with ESPHome should work. Only connect TX 
 1. Download folder SDM and paste it into below location of your Home Assistant server
     <B>\\\your_Home_Assistant_address\config\esphome\custom_components</B>
     If folder custom_components doesn't exist create it.
-2. Create <B>New node</B> according to your board type. Paste example code to your node.
+2. Create <B>New node</B> according to your board type. <B><font size=16>Paste example code to your node and modify it according to your code and configuration!!</B></font>
 3. Validate code, compile and upload it.
 4. <B><font size = 16>Rememmber that RS converter and SDM630 need to be connected and powered on, otherwise in logs you will see nothing and ESP board will be resetting and unavailable. So the best way to test is the code working, connect ing SDM630 normal cable with plug to wall socket and make connection according to diagram in point 3</B></font>
