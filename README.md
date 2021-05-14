@@ -28,3 +28,5 @@ Usually any board which is compatible with ESPHome should work. Only connect TX 
 2. Create <B>New node</B> according to your board type. <B><font size=16>Paste example code to your node and modify it according to your code and configuration!!</B></font>
 3. Validate code, compile and upload it.
 4. <B><font size = 16>Rememmber that RS converter and SDM630 need to be connected and powered on, otherwise in logs you will see nothing and ESP board will be resetting and unavailable. So the best way to test is the code working, connect ing SDM630 normal cable with plug to wall socket and make connection according to diagram in point 3</B></font>
+5. If we have brand new ESP it is necessary to download Firmware generated in ESPHome and upload it with below tool:
+https://github.com/esphome/esphome-flasher/releases/tag/v1.3.0
