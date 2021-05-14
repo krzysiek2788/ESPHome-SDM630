@@ -41,11 +41,13 @@ uart:
     rx_pin: RX
     baud_rate: 9600
     stop_bits: 1
+    
 ota:
 
 time:
   - platform: homeassistant
     id: homeassistant_time
+    
 binary_sensor:
   # https://esphome.io/components/binary_sensor/status.html
   - platform: status
