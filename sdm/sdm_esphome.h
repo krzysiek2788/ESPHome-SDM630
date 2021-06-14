@@ -67,9 +67,11 @@ public:
     float current1 = sdm.readVal(SDM630_CURRENT1);
 	float current2 = sdm.readVal(SDM630_CURRENT2);
 	float current3 = sdm.readVal(SDM630_CURRENT3);
-    current_sensor_1->publish_state(current1);
+	float currentsum = sdm.readVal(SDM630_CURRENTSUM);
+        current_sensor_1->publish_state(current1);
 	current_sensor_2->publish_state(current2);
 	current_sensor_3->publish_state(current3);
+	currentsum_sensor->publish_state(currentsum);
 
     float power1 = sdm.readVal(SDM630_POWER1);
 	float power2 = sdm.readVal(SDM630_POWER2);
